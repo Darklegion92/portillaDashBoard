@@ -22,13 +22,13 @@
     path: '/dashboard',
     name: 'Dashboard',
     icon: 'AreaChartOutlined',
-    component: './dashboard',
+    component: './Dashboard',
   },
   {
     path: '/slider',
     name: 'Carrusel',
     icon: 'TableOutlined',
-    component: './slider',
+    component: './Slider',
   },
   {
     path: '/',
