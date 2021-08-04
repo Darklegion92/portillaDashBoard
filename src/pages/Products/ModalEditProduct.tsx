@@ -1,6 +1,6 @@
 import { BarcodeOutlined, LoadingOutlined, PlusOutlined, SketchOutlined } from '@ant-design/icons';
 import { Modal, Form, Input, InputNumber, Select, Tabs, Divider, Upload, Switch, Row, Col, message } from 'antd'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const apirest = process.env.API || 'http://localhost'
 
@@ -18,6 +18,13 @@ const FormItem = Form.Item
 const ModalEditProduct = (props: PropsModal): React.ReactNode => {
     const { visible, onCancel, product } = props
     const [loading, setLoading] = useState(false)
+    const [lista, setLista] = useState<string[]>([])
+
+    useEffect(() => {
+        const newLista = product?.lista.split('*') || []
+        setLista(newLista)
+    }, [])
+
 
     const onChange = (info: any) => {
         setLoading(true)
@@ -184,9 +191,13 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
                                 </FormItem>
                             </Col>
                         </Row>
-                        <FormItem label="Lista">
-                            <InputNumber name="rank" />
-                        </FormItem>
+                        <Form.List name="lista">
+                            {lista.map((item: string, index: number) => (
+                                <FormItem label="">
+                                    <Input/>
+                                </FormItem>
+                            ))}
+                        </Form.List>
                     </TabPane>
                 </Tabs>
             </Form>
