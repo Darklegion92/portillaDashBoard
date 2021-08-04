@@ -34,7 +34,7 @@
     path: '/products',
     name: 'Productos',
     icon: 'ShoppingCartOutlined',
-    component: './products',
+    component: './Products',
   },
   {
     path: '/',
