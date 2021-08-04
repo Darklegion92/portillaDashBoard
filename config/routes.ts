@@ -31,6 +31,12 @@
     component: './Slider',
   },
   {
+    path: '/products',
+    name: 'Productos',
+    icon: 'ShoppingCartOutlined',
+    component: './products',
+  },
+  {
     path: '/',
     redirect: '/dashboard',
   },

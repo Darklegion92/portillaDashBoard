@@ -3,7 +3,7 @@
 import { request } from 'umi';
 import axios from 'axios'
 
-const apirest = process.env.API || 'http://localhost'
+const apirest = process.env.API || 'https://api.bodegaportilla.com/' || 'http://localhost'
 
 /** 获取当前的用户 GET /api/currentUser */
 export async function currentUser(options?: { [key: string]: any }) {
