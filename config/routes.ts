@@ -37,6 +37,12 @@
     component: './Products',
   },
   {
+    path: '/orders',
+    name: 'Pedidos',
+    icon: 'ShoppingCartOutlined',
+    component: './Orders',
+  },
+  {
     path: '/',
     redirect: '/dashboard',
   },

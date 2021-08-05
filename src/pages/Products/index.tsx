@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import axios from 'axios';
-import { Badge, Button, Card, Col, Divider, Form, Input, Row, Table } from 'antd';
+import { Badge, Button, Card, Col, Divider, Form, Input, message, Row, Table } from 'antd';
 import numeral from 'numeral'
 import type { ColumnsType } from 'antd/lib/table';
 import { EditFilled, PlusOutlined } from '@ant-design/icons';
@@ -15,7 +15,7 @@ const FormItem = Form.Item
 const Products = (): React.ReactNode => {
     const [products, setProducts] = useState<PRODUCTS.Product[] | []>([])
     const [modal, setModal] = useState<PropsModal>({
-        visible: true,
+        visible: false,
     })
 
     const getProducts = async (name: string) => {
@@ -24,18 +24,19 @@ const Products = (): React.ReactNode => {
             setProducts(response.data)
         }
     }
-
-    useEffect(() => {
-        getProducts('Arr')
-    }, [])
+    const onFinish = (values: any) => {
+        if (values.name) {
+            getProducts(values.name)
+        }
+    }
 
     const renderFilters = (
         <Card size="small">
-            <Form layout="vertical">
+            <Form layout="vertical" onFinish={onFinish}>
                 <Row gutter={16}>
                     <Col span={12}>
-                        <FormItem label="Nombre">
-                            <Input name="name" />
+                        <FormItem label="Nombre" name="name" required>
+                            <Input />
                         </FormItem>
                     </Col>
                     <Col span={12}>
@@ -56,8 +57,41 @@ const Products = (): React.ReactNode => {
         })
     }
 
-    const saveAndUpdate = (params: PRODUCTS.Product) => {
+    const saveAndUpdate = async (params: PRODUCTS.Product, list: string[]) => {
+        let newList = ''
+        list.forEach(item => {
+            if (item !== '') {
+                newList = `${newList}*${item}`
+            }
+        })
 
+        if (modal?.product) {
+            const response = await axios.put(`${apirest}/articulos/editar`, { articulo: { ...modal?.product, ...params, lista: newList } },
+                {
+                    headers: {
+                        authorization: localStorage.getItem('token') || '',
+                    }
+                })
+            if (response.status === 200) {
+                setModal({ visible: false })
+                setProducts([])
+                message.success("Producto actualizado correctamente")
+            }
+            else message.error("Ha ocurrido un error")
+        } else {
+            const response = await axios.post(`${apirest}/articulos/crear`, { articulo: { ...params, lista: newList }, img: params.img },
+                {
+                    headers: {
+                        authorization: localStorage.getItem('token') || '',
+                    }
+                })
+            if (response.status === 200) {
+                setModal({ visible: false })
+                setProducts([])
+                message.success("Producto creado correctamente")
+            }
+            else message.error("Ha ocurrido un error")
+        }
     }
 
     const closeModal = () => {

@@ -12,7 +12,7 @@ const Settings: LayoutSettings & {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'SOLTEC',
+  title: 'Bodega Portilla',
   pwa: false,
   logo: 'http://localhost:3000/img/logo.png',
   iconfontUrl: '',

@@ -22,5 +22,20 @@ declare namespace PRODUCTS {
         img: string;
         incremento: number;
         estado: number;
+    };
+    type Group = {
+        id: number;
+        nombre: string;
+        subgrupos: Subgrupo[];
+    };
+
+    type Subgroup = {
+        id: number;
+        nombre: string;
+        idgrupo: number;
+    };
+    type Brand = {
+        id: number;
+        nombre: string;
     }
 }
