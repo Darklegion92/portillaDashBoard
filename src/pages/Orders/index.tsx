@@ -11,7 +11,7 @@ import moment from 'moment';
 import ModalEditOrder from './ModalEditOrder';
 import FormatoRemision from './reports/FormatoRemision'
 
-const apirest = process.env.API || 'http://localhost'
+const apirest = process.env.API || 'https://api.bodegaportilla.com'
 
 const FormItem = Form.Item
 const { RangePicker } = DatePicker
