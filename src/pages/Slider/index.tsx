@@ -42,7 +42,7 @@ const Dashboard = (): React.ReactNode => {
 
         if (info.file.status === 'uploading' && !fileFind) {
             const newImages = [...images]
-            newImages.push(info.file)
+
             setImages(newImages)
         }
         if (info.file.status === 'done') {
@@ -51,7 +51,7 @@ const Dashboard = (): React.ReactNode => {
                     return {
                         uid: item.uid,
                         url: `${apirest}/temp/${info.file.response.img}`,
-                        thumbUrl: `/carrusel/${info.file.response.img}`,
+                        thumbUrl: `carrusel/${info.file.response.img}`,
                     }
                 }
                 return item
@@ -76,7 +76,7 @@ const Dashboard = (): React.ReactNode => {
                 if (item.uid === info.file.uid) {
                     return {
                         uid: item.uid,
-                        url: `${apirest}/temp/${info.file.response.img}`,
+                        url: `${apirest}/temp${info.file.response.img}`,
                         thumbUrl: `img/carrusel/movil/${info.file.response.img}`,
                     }
                 }
@@ -115,10 +115,13 @@ const Dashboard = (): React.ReactNode => {
             for (let i = 0; i < imagesMovil.length; i += 1) {
                 const dato: UploadFile = imagesMovil[i]
                 const datoAdd: UploadFile = images[i] || imagesMovil[i]
+                console.log(datoAdd?.thumbUrl?.replaceAll('/carrusel', ''));
                 if (typeof dato?.uid === 'string') {
+
+
                     insertSlider({
-                        imgMovil: dato?.thumbUrl,
-                        img: datoAdd?.thumbUrl,
+                        imgMovil: dato?.thumbUrl?.replaceAll('/carrusel', ''),
+                        img: datoAdd?.thumbUrl?.replaceAll('/carrusel', ''),
                         idgrupo: 1,
                     })
                 }
@@ -129,8 +132,8 @@ const Dashboard = (): React.ReactNode => {
                 const datoAdd: UploadFile = imagesMovil[i] || images[i]
                 if (typeof dato?.uid === 'string') {
                     insertSlider({
-                        img: dato?.thumbUrl,
-                        imgMovil: datoAdd?.thumbUrl,
+                        img: dato?.thumbUrl?.replaceAll('/carrusel', ''),
+                        imgMovil: datoAdd?.thumbUrl?.replaceAll('/carrusel', ''),
                         idgrupo: 1,
                     })
                 }
