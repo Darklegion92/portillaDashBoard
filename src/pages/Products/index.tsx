@@ -22,6 +22,8 @@ const Products = (): React.ReactNode => {
         const response = await axios.get(`${apirest}/articulos?nombre=${name}`)
         if (response.status === 200) {
             setProducts(response.data)
+        } else {
+            setProducts([])
         }
     }
     const onFinish = (values: any) => {

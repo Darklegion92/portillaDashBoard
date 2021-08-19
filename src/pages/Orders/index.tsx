@@ -10,6 +10,7 @@ import type { PropsModal } from './ModalEditOrder';
 import moment from 'moment';
 import ModalEditOrder from './ModalEditOrder';
 import FormatoRemision from './reports/FormatoRemision'
+import { stringify } from 'qs';
 
 const apirest = process.env.API || 'https://apirest.bodegaportilla.com'
 
@@ -46,7 +47,8 @@ const Orders = (): React.ReactNode => {
     }
 
     const getOrders = async (params?: any) => {
-        const response = await axios.get(`${apirest}/carrito/consultar`, {
+
+        const response = await axios.get(`${apirest}/carrito/consultar?${stringify(params)}`, {
             headers: {
                 authorization: localStorage.getItem('token') || '',
             }
@@ -63,9 +65,28 @@ const Orders = (): React.ReactNode => {
 
 
     const onFinish = (values: any) => {
-        if (values.name) {
-            getOrders(values.name)
+        const params = { ...values }
+        if (values.fechas) {
+            delete params.fechas
+            params.fechas = JSON.stringify({
+                date: [
+                    moment(values.fechas[0]).format('YYYY/MM/DD'),
+                    moment(values.fechas[1]).format('YYYY/MM/DD'),
+                ],
+                dateString: [
+                    moment(values.fechas[0]).format('YYYY/MM/DD'),
+                    moment(values.fechas[1]).format('YYYY/MM/DD'),
+                ]
+            })
+        } else {
+            delete params.fecha
         }
+
+        if (!values.estado) {
+            delete params.estado
+        }
+
+        getOrders(params)
     }
     const showModal = (id?: number) => {
         const orderSelected = orders.find(order => order.id === id)

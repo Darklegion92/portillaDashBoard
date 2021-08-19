@@ -51,7 +51,7 @@ const Dashboard = (): React.ReactNode => {
                     return {
                         uid: item.uid,
                         url: `${apirest}/temp/${info.file.response.img}`,
-                        thumbUrl: `/carrusel/${info.file.response.img}`,
+                        thumbUrl: `${info.file.response.img}`,
                     }
                 }
                 return item
@@ -77,7 +77,7 @@ const Dashboard = (): React.ReactNode => {
                     return {
                         uid: item.uid,
                         url: `${apirest}/temp/${info.file.response.img}`,
-                        thumbUrl: `img/carrusel/movil/${info.file.response.img}`,
+                        thumbUrl: `${info.file.response.img}`,
                     }
                 }
                 return item
