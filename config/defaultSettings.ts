@@ -14,7 +14,7 @@ const Settings: LayoutSettings & {
   colorWeak: false,
   title: 'Bodega Portilla',
   pwa: false,
-  logo: 'http://localhost:3000/img/logo.png',
+  logo: 'https://apirest.bodegaportilla.com:3000/img/logo.png',
   iconfontUrl: '',
 };
 
