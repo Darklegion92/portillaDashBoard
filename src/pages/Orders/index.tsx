@@ -12,7 +12,7 @@ import ModalEditOrder from './ModalEditOrder';
 import FormatoRemision from './reports/FormatoRemision'
 import { stringify } from 'qs';
 
-const apirest = process.env.API || 'https://apirest.bodegaportilla.com'
+const apirest = process.env.API || 'http://localhost'
 
 const FormItem = Form.Item
 const { RangePicker } = DatePicker
@@ -55,6 +55,8 @@ const Orders = (): React.ReactNode => {
         })
         if (response.status === 200) {
             setOrders(response.data)
+        }else{
+            setOrders([])
         }
     }
 

@@ -4,7 +4,7 @@ import { Modal, Form, Input, InputNumber, Typography, Select, Tabs, Divider, Lis
 import axios from 'axios';
 import React, { useState, useEffect } from 'react'
 
-const apirest = process.env.API || 'https://apirest.bodegaportilla.com'
+const apirest = process.env.API || 'http://localhost'
 export interface PropsModal {
     visible: boolean;
     product?: PRODUCTS.Product;

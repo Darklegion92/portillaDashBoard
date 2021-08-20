@@ -6,7 +6,7 @@ import type { ModalProps } from './components/ModalEditRecipe';
 import ModalEditRecipe from './components/ModalEditRecipe';
 
 
-const apirest = process.env.API || 'https://apirest.bodegaportilla.com'
+const apirest = process.env.API || 'http://localhost'
 
 const styles = {
     col1: {

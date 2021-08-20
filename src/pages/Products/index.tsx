@@ -8,7 +8,7 @@ import { EditFilled, PlusOutlined } from '@ant-design/icons';
 import type { PropsModal } from './ModalEditProduct';
 import ModalEditProduct from './ModalEditProduct';
 
-const apirest = process.env.API || 'https://apirest.bodegaportilla.com'
+const apirest = process.env.API || 'http://localhost'
 
 const FormItem = Form.Item
 

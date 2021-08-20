@@ -6,7 +6,7 @@ import axios from 'axios';
 import { DeleteOutlined, MobileOutlined, PlusOutlined, SaveFilled, WindowsOutlined } from '@ant-design/icons';
 import type { UploadFile } from 'antd/lib/upload/interface';
 
-const apirest = process.env.API || 'https://apirest.bodegaportilla.com'
+const apirest = process.env.API || 'http://localhost'
 
 const { TabPane } = Tabs;
 
