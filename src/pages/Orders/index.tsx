@@ -12,7 +12,7 @@ import ModalEditOrder from './ModalEditOrder';
 import FormatoRemision from './reports/FormatoRemision'
 import { stringify } from 'qs';
 
-const apirest = process.env.API || 'http://localhost'
+const apirest = process.env.API || 'https://apirest.bodegaportilla.com'
 
 const FormItem = Form.Item
 const { RangePicker } = DatePicker

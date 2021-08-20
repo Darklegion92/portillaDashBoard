@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8000/"
+      "url": "https://apirest.bodegaportilla.com:8000/"
     },
     {
       "url": "https://localhost:8000/"
