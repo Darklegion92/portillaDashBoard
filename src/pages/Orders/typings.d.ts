@@ -1,4 +1,4 @@
-declare namespace ORDERS {
+    declare namespace ORDERS {
     type State = {
         id: number;
         nombre: string;

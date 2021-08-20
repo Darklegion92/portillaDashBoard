@@ -3,6 +3,7 @@
 .container {
   display: flex;
   flex-direction: column;
+  justify-content: 'center';
   height: 100vh;
   overflow: auto;
   background: @layout-body-background;
@@ -22,6 +23,9 @@
 .content {
   flex: 1;
   padding: 32px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 @media (min-width: @screen-md-min) {
@@ -39,6 +43,8 @@
 
 .top {
   text-align: center;
+  justify-content: 'center';
+
 }
 
 .header {

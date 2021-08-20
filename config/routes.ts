@@ -39,8 +39,14 @@
   {
     path: '/orders',
     name: 'Pedidos',
-    icon: 'ShoppingCartOutlined',
+    icon: 'DollarCircleOutlined',
     component: './Orders',
+  },
+  {
+    path: '/recipes',
+    name: 'Recetas',
+    icon: 'FileProtectOutlined',
+    component: './RecipesSection',
   },
   {
     path: '/',

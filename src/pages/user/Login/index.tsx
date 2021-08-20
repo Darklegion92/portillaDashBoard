@@ -38,7 +38,7 @@ const Login: React.FC = () => {
       const response = await login({ ...values });
 
       if (response.status === 200) {
-        const defaultLoginSuccessMessage = '登录成功！';
+        const defaultLoginSuccessMessage = 'Bienvenido';
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('user', JSON.stringify(response.data.usuario));
         message.success(defaultLoginSuccessMessage);
@@ -68,6 +68,7 @@ const Login: React.FC = () => {
     <div className={styles.container}>
       <div className={styles.content}>
         <div className={styles.top}>
+          <img src="/logo.png" width="200px" />
           <div className={styles.header}>
             <Link to="/">
               <span className={styles.title}>Panel Administración</span>

@@ -71,10 +71,10 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
                 url: `temp/${info.file.response.img}`,
                 img: info.file.response.img,
             })
-            message.success(`${info.file.name} file uploaded successfully`)
+            message.success(`${info.file.name} imagen subida correctamente`)
         } else if (info.file.status === 'error') {
             setLoading(false)
-            message.error(`${info.file.name} file upload failed.`)
+            message.error(`${info.file.name} error al subir la imagen`)
         }
         return false
     }
@@ -118,6 +118,7 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
             <div style={{ marginTop: 8 }}>Subir</div>
         </div>
     );
+
     return (
         <Modal
             visible={visible}
