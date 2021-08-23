@@ -2,16 +2,16 @@
 import './styles.css'
 
 export default class FormatoFactura extends React.Component {
-  render () {
+  render() {
     const formato = new Intl.NumberFormat('en-Us')
     const {
-      Header,Body
+      Header, Body
     } = this.props.datos
 
     return Header && Body ? (
       <div className='formato-facturaventa'>
-        <div className='encabezado'>   
-          <div style={{ fontSize: '40px'}}>
+        <div className='encabezado'>
+          <div style={{ fontSize: '40px' }}>
             ORDEN DE PEDIDO
           </div>
           <div>Cliente: {Header.nombre}</div>
@@ -51,6 +51,6 @@ export default class FormatoFactura extends React.Component {
           </div>
         </div>
       </div>
-    ):<div>Sin Datos</div>
+    ) : <div>Sin Datos</div>
   }
 }

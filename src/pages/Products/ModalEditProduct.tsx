@@ -103,10 +103,11 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
     }
     const onFinish = (values: any) => {
         if (values.precio)
-            if (values.clasificacion)
+            if (values.clasificacion) {
+                delete values.imagen
                 // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                 onOk && onOk({ ...values, img: image?.img }, lista)
-            else
+            } else
                 setActiveKey('3')
         else
             setActiveKey('2')
@@ -268,7 +269,7 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
                                         showUploadList={false}
                                         onChange={onChange}
                                     >
-                                        {product?.img || image?.url ? <img src={`${apirest}/${product?.img || image?.url}`} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+                                        {image?.url || product?.img ? <img src={`${apirest}/${image?.url || product?.img}`} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
                                     </Upload>
                                 </FormItem>
                             </Col>
