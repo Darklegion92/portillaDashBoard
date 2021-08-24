@@ -120,6 +120,9 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
         </div>
     );
 
+    console.log(initialValuesForm.embalaje === 'Und' ? initialValuesForm.precio : initialValuesForm.precio * 1000);
+
+
     return (
         <Modal
             visible={visible}
@@ -131,7 +134,7 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
         >
             <Form
                 layout="vertical"
-                initialValues={initialValuesForm}
+                initialValues={{ ...initialValuesForm, precio: initialValuesForm.embalaje === 'Und' ? initialValuesForm.precio : (initialValuesForm?.precio || 0) * 1000 }}
                 onFinish={onFinish}
             >
                 <Tabs activeKey={activeKey} onChange={setActiveKey}>

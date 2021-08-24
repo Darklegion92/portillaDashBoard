@@ -116,7 +116,7 @@ const Products = (): React.ReactNode => {
                 title: 'Precio',
                 dataIndex: 'precio',
                 align: 'right',
-                render: precio => numeral(precio).format('$ 0,0')
+                render: (precio, record) => numeral(record.embalaje === 'Und' ? precio : precio * 1000).format('$ 0,0')
             },
             {
                 title: 'Embalaje',
