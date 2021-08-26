@@ -5,6 +5,7 @@ import { Button, Card, Carousel, Divider, message, Tabs, Upload } from 'antd';
 import axios from 'axios';
 import { DeleteOutlined, MobileOutlined, PlusOutlined, SaveFilled, WindowsOutlined } from '@ant-design/icons';
 import type { UploadFile } from 'antd/lib/upload/interface';
+import { loginOut } from '@/components/RightContent/AvatarDropdown';
 
 const apirest = process.env.API || 'https://apirest.bodegaportilla.com'
 
@@ -15,20 +16,27 @@ const Dashboard = (): React.ReactNode => {
     const [imagesMovil, setImagesMovil] = useState([])
 
     const getImages = async () => {
-        const response = await axios.get(`${apirest}/parametros/carusel`)
-        if (response.status === 200) {
-            const newImages = response?.data?.map((item: SLIDER.Image) => ({
-                uid: item.id,
-                url: `${apirest}/${item.img}`,
-                thumbUrl: item.img,
-            }))
-            const newImagesMovil = response?.data?.map((item: SLIDER.Image) => ({
-                uid: item.id,
-                url: `${apirest}/${item.imgmovil}`,
-                thumbUrl: item.imgmovil,
-            }))
-            setImages(newImages)
-            setImagesMovil(newImagesMovil)
+        try {
+            const response = await axios.get(`${apirest}/parametros/carusel`)
+            if (response.status === 200) {
+                const newImages = response?.data?.map((item: SLIDER.Image) => ({
+                    uid: item.id,
+                    url: `${apirest}/${item.img}`,
+                    thumbUrl: item.img,
+                }))
+                const newImagesMovil = response?.data?.map((item: SLIDER.Image) => ({
+                    uid: item.id,
+                    url: `${apirest}/${item.imgmovil}`,
+                    thumbUrl: item.imgmovil,
+                }))
+                setImages(newImages)
+                setImagesMovil(newImagesMovil)
+            }
+        } catch (error) {
+            if (error.status === 401) {
+                loginOut();
+            }
+            message.error("Ha ocurrido un error")
         }
     }
 
@@ -91,22 +99,36 @@ const Dashboard = (): React.ReactNode => {
     }
 
     const removeImage = async (id: string) => {
-        await axios.delete(`${apirest}/parametros/carusel/${id}`, {
-            headers: {
-                authorization: localStorage.getItem('token') || '',
+        try {
+            await axios.delete(`${apirest}/parametros/carusel/${id}`, {
+                headers: {
+                    authorization: localStorage.getItem('token') || '',
+                }
+            })
+            getImages()
+        } catch (error) {
+            if (error.status === 401) {
+                loginOut();
             }
-        })
-        getImages()
+            message.error("Ha ocurrido un error")
+        }
     }
 
     const insertSlider = async (slider: any) => {
-        const response = await axios.post(`${apirest}/parametros/carusel`, slider, {
-            headers: {
-                authorization: localStorage.getItem('token') || '',
+        try {
+            const response = await axios.post(`${apirest}/parametros/carusel`, slider, {
+                headers: {
+                    authorization: localStorage.getItem('token') || '',
+                }
+            })
+            if (response.status === 200) {
+                message.success('Imagen agregada correctamente')
             }
-        })
-        if (response.status === 200) {
-            message.success('Imagen agregada correctamente')
+        } catch (error) {
+            if (error.status === 401) {
+                loginOut();
+            }
+            message.error("Ha ocurrido un error")
         }
     }
 

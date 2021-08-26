@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Card, Col, message, Row } from 'antd';
 import type { ModalProps } from './components/ModalEditRecipe';
 import ModalEditRecipe from './components/ModalEditRecipe';
+import { loginOut } from '@/components/RightContent/AvatarDropdown';
 
 
 const apirest = process.env.API || 'https://apirest.bodegaportilla.com'
@@ -25,14 +26,20 @@ const Orders = (): React.ReactNode => {
         visible: false,
     })
     const getRecipes = async () => {
-
-        const response = await axios.get(`${apirest}/parametros/recomendaciones`, {
-            headers: {
-                authorization: localStorage.getItem('token') || '',
+        try {
+            const response = await axios.get(`${apirest}/parametros/recomendaciones`, {
+                headers: {
+                    authorization: localStorage.getItem('token') || '',
+                }
+            })
+            if (response.status === 200) {
+                serRecipes(response.data)
             }
-        })
-        if (response.status === 200) {
-            serRecipes(response.data)
+        } catch (error) {
+            if (error.status === 401) {
+                loginOut();
+            }
+            message.error("Ha ocurrido un error")
         }
     }
 
@@ -68,17 +75,23 @@ const Orders = (): React.ReactNode => {
             params.img = img
             params.imgant = modal.recipe?.img
         }
+        try {
+            const response = await axios.put(`${apirest}/parametros/recomendaciones`, params, {
+                headers: {
+                    authorization: localStorage.getItem('token') || '',
+                }
+            })
 
-        const response = await axios.put(`${apirest}/parametros/recomendaciones`, params, {
-            headers: {
-                authorization: localStorage.getItem('token') || '',
+            if (response.status === 200) {
+                message.success("Receta creada correctamente")
+                getRecipes()
+                return true
             }
-        })
-
-        if (response.status === 200) {
-            message.success("Receta creada correctamente")
-            getRecipes()
-            return true
+        } catch (error) {
+            if (error.status === 401) {
+                loginOut();
+            }
+            message.error("Ha ocurrido un error")
         }
         return false
 

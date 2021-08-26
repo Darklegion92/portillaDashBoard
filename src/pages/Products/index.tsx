@@ -7,6 +7,7 @@ import type { ColumnsType } from 'antd/lib/table';
 import { EditFilled, PlusOutlined } from '@ant-design/icons';
 import type { PropsModal } from './ModalEditProduct';
 import ModalEditProduct from './ModalEditProduct';
+import { loginOut } from '@/components/RightContent/AvatarDropdown';
 
 const apirest = process.env.API || 'https://apirest.bodegaportilla.com'
 
@@ -19,11 +20,18 @@ const Products = (): React.ReactNode => {
     })
 
     const getProducts = async (name: string) => {
-        const response = await axios.get(`${apirest}/articulos?nombre=${name}`)
-        if (response.status === 200) {
-            setProducts(response.data)
-        } else {
-            setProducts([])
+        try {
+            const response = await axios.get(`${apirest}/articulos?nombre=${name}`)
+            if (response.status === 200) {
+                setProducts(response.data)
+            } else {
+                setProducts([])
+            }
+
+        } catch (error) {
+            if (error.status === 401) {
+                loginOut();
+            }
         }
     }
     const onFinish = (values: any) => {
@@ -68,31 +76,43 @@ const Products = (): React.ReactNode => {
         })
 
         if (modal?.product) {
-            const response = await axios.put(`${apirest}/articulos/editar`, { articulo: { ...modal?.product, ...params, lista: newList } },
-                {
-                    headers: {
-                        authorization: localStorage.getItem('token') || '',
-                    }
-                })
-            if (response.status === 200) {
-                setModal({ visible: false })
-                setProducts([])
-                message.success("Producto actualizado correctamente")
+            try {
+                const response = await axios.put(`${apirest}/articulos/editar`, { articulo: { ...modal?.product, ...params, lista: newList }, img: params.img },
+                    {
+                        headers: {
+                            authorization: localStorage.getItem('token') || '',
+                        }
+                    })
+                if (response.status === 200) {
+                    setModal({ visible: false })
+                    setProducts([])
+                    message.success("Producto actualizado correctamente")
+                }
+            } catch (error) {
+                if (error.status === 401) {
+                    loginOut();
+                }
+                message.error("Ha ocurrido un error")
             }
-            else message.error("Ha ocurrido un error")
         } else {
-            const response = await axios.post(`${apirest}/articulos/crear`, { articulo: { ...params, lista: newList }, img: params.img },
-                {
-                    headers: {
-                        authorization: localStorage.getItem('token') || '',
-                    }
-                })
-            if (response.status === 200) {
-                setModal({ visible: false })
-                setProducts([])
-                message.success("Producto creado correctamente")
+            try {
+                const response = await axios.post(`${apirest}/articulos/crear`, { articulo: { ...params, lista: newList }, img: params.img },
+                    {
+                        headers: {
+                            authorization: localStorage.getItem('token') || '',
+                        }
+                    })
+                if (response.status === 200) {
+                    setModal({ visible: false })
+                    setProducts([])
+                    message.success("Producto creado correctamente")
+                }
+            } catch (error) {
+                if (error.status === 401) {
+                    loginOut();
+                }
+                message.error("Ha ocurrido un error")
             }
-            else message.error("Ha ocurrido un error")
         }
     }
 

@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { loginOut } from '@/components/RightContent/AvatarDropdown';
 import { BarcodeOutlined, DeleteOutlined, LoadingOutlined, PlusOutlined, SketchOutlined } from '@ant-design/icons';
 import { Modal, Form, Input, InputNumber, Typography, Select, Tabs, Divider, List, Upload, Switch, Row, Col, message, Button, Space } from 'antd'
 import axios from 'axios';
@@ -33,19 +34,33 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
     }
 
     const getGroups = async () => {
-        const response = await axios.get(`${apirest}/parametros/grupos`)
-        if (response.status === 200) {
-            setGroups(response.data)
-            if (product) {
-                onChangeGroup(product.idgrupo)
+        try {
+            const response = await axios.get(`${apirest}/parametros/grupos`)
+            if (response.status === 200) {
+                setGroups(response.data)
+                if (product) {
+                    onChangeGroup(product.idgrupo)
+                }
             }
+        } catch (error) {
+            if (error.status === 401) {
+                loginOut();
+            }
+            message.error("Ha ocurrido un error")
         }
     }
 
     const getBrands = async () => {
-        const response = await axios.get(`${apirest}/parametros/marcas`)
-        if (response.status === 200) {
-            setBrands(response.data)
+        try {
+            const response = await axios.get(`${apirest}/parametros/marcas`)
+            if (response.status === 200) {
+                setBrands(response.data)
+            }
+        } catch (error) {
+            if (error.status === 401) {
+                loginOut();
+            }
+            message.error("Ha ocurrido un error")
         }
     }
 
@@ -120,7 +135,6 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
         </div>
     );
 
-    console.log(initialValuesForm.embalaje === 'Und' ? initialValuesForm.precio : initialValuesForm.precio * 1000);
 
 
     return (

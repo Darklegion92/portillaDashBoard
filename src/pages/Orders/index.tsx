@@ -11,6 +11,7 @@ import moment from 'moment';
 import ModalEditOrder from './ModalEditOrder';
 import FormatoRemision from './reports/FormatoRemision'
 import { stringify } from 'qs';
+import { loginOut } from '@/components/RightContent/AvatarDropdown';
 
 const apirest = process.env.API || 'https://apirest.bodegaportilla.com'
 
@@ -25,6 +26,8 @@ const Orders = (): React.ReactNode => {
     const [modal, setModal] = useState<PropsModal>({
         visible: false,
     })
+
+
 
     const componentRef = useRef()
 
@@ -41,22 +44,30 @@ const Orders = (): React.ReactNode => {
                 localStorage.clear()
             }
         } catch (error) {
+            if (error.status === 401) {
+                loginOut();
+            }
             message.error("Se ha presentado un error")
-
         }
     }
 
     const getOrders = async (params?: any) => {
-
-        const response = await axios.get(`${apirest}/carrito/consultar?${stringify(params)}`, {
-            headers: {
-                authorization: localStorage.getItem('token') || '',
+        try {
+            const response = await axios.get(`${apirest}/carrito/consultar?${stringify(params)}`, {
+                headers: {
+                    authorization: localStorage.getItem('token') || '',
+                }
+            })
+            if (response.status === 200) {
+                setOrders(response.data)
+            } else {
+                setOrders([])
             }
-        })
-        if (response.status === 200) {
-            setOrders(response.data)
-        }else{
-            setOrders([])
+        } catch (error) {
+            if (error.status === 401) {
+                loginOut();
+            }
+            message.error("Ha ocurrido un error")
         }
     }
 
@@ -101,19 +112,25 @@ const Orders = (): React.ReactNode => {
     }
 
     const changeState = async (params: ORDERS.Order, idState?: number) => {
-
-        const response = await axios.put(`${apirest}/carrito/actualizarestado`, { idorden: modal.order?.id, state: idState || params.estado }, {
-            headers: {
-                authorization: localStorage.getItem('token') || '',
-            }
-        })
-        if (response.status === 200) {
-            getOrders()
-            setModal({
-                visible: false
+        try {
+            const response = await axios.put(`${apirest}/carrito/actualizarestado`, { idorden: modal.order?.id, state: idState || params.estado }, {
+                headers: {
+                    authorization: localStorage.getItem('token') || '',
+                }
             })
-        } else {
-            message.error(response.data.messaje)
+            if (response.status === 200) {
+                getOrders()
+                setModal({
+                    visible: false
+                })
+            } else {
+                message.error(response.data.messaje)
+            }
+        } catch (error) {
+            if (error.status === 401) {
+                loginOut();
+            }
+            message.error("Ha ocurrido un error")
         }
     }
 
