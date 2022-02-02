@@ -8,7 +8,7 @@ export interface ModalProps {
     onCancel?: () => void
     onOk?: (values: any) => Promise<boolean>
 }
-const apirest = process.env.API || 'https://apirest.bodegaportilla.com'
+const apirest = API_URL;
 
 const FormItem = Form.Item
 
