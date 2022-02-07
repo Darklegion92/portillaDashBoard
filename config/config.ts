@@ -1,16 +1,19 @@
 // https://umijs.org/config/
-import { defineConfig } from 'umi';
-import { join } from 'path';
+import { defineConfig } from 'umi'
+import { join } from 'path'
 
-import defaultSettings from './defaultSettings';
-import proxy from './proxy';
-import routes from './routes';
+import defaultSettings from './defaultSettings'
+import proxy from './proxy'
+import routes from './routes'
 
-const { REACT_APP_ENV } = process.env;
+const { REACT_APP_ENV } = process.env
 
 export default defineConfig({
   hash: true,
   antd: {},
+  define: {
+    API_REST: 'http://localhost:80',
+  },
   dva: {
     hmr: true,
   },
@@ -23,7 +26,7 @@ export default defineConfig({
   // https://umijs.org/zh-CN/plugins/plugin-locale
   locale: {
     // default zh-CN
-    default: 'en-US',
+    default: 'es-LA',
     antd: true,
     // default true, when it is true, will use `navigator.language` overwrite default
     baseNavigator: true,
@@ -69,4 +72,4 @@ export default defineConfig({
   mfsu: {},
   webpack5: {},
   exportStatic: {},
-});
+})

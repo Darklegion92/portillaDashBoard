@@ -2,6 +2,9 @@
 import { defineConfig } from 'umi';
 
 export default defineConfig({
+  define: {
+    API_REST: 'http://localhost:80',
+  },
   plugins: [
     // https://github.com/zthxxx/react-dev-inspector
     'react-dev-inspector/plugins/umi/react-inspector',

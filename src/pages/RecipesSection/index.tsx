@@ -7,7 +7,7 @@ import ModalEditRecipe from './components/ModalEditRecipe';
 import { loginOut } from '@/components/RightContent/AvatarDropdown';
 
 
-const apirest = process.env.API || 'https://apirest.bodegaportilla.com'
+const apirest = API_REST || 'https://apirest.bodegaportilla.com'
 
 const styles = {
     col1: {
