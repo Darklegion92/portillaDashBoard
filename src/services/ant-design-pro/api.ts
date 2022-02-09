@@ -1,20 +1,18 @@
 // @ts-ignore
 /* eslint-disable */
-import { request } from 'umi'
-import axios from 'axios'
+import { request } from 'umi';
+import axios from 'axios';
 
-const apirest = API_REST || 'https://apirest.bodegaportilla.com'
+const apirest = API_URL;
 
 /** 获取当前的用户 GET /api/currentUser */
-export async function currentUser (options?: { [key: string]: any }) {
-  const userString = localStorage.getItem('user')
-  return userString ? JSON.parse(userString) : undefined
+export async function currentUser(options?: { [key: string]: any }) {
+  const userString = localStorage.getItem('user');
+  return userString ? JSON.parse(userString) : undefined;
 }
 
 /** 退出登录接口 POST /api/login/outLogin */
-export async function outLogin (options?: { [key: string]: any }) {
-  console.log(options)
-
+export async function outLogin(options?: { [key: string]: any }) {
   /* return request<Record<string, any>>('/api/login/outLogin', {
      method: 'POST',
      ...(options || {}),
@@ -29,7 +27,7 @@ export async function login (body: API.LoginParams, options?: { [key: string]: a
       usuario: body.username,
       password: body.password,
     },
-  })
+  });
 }
 
 /** 此处后端没有提供注释 GET /api/notices */

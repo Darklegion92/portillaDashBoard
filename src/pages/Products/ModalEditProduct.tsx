@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { loginOut } from '@/components/RightContent/AvatarDropdown'
+import { loginOut } from '@/components/RightContent/AvatarDropdown';
 import {
   BarcodeOutlined,
   DeleteOutlined,
-  LoadingOutlined,
   PlusOutlined,
   SketchOutlined,
-} from '@ant-design/icons'
+  UploadOutlined,
+} from '@ant-design/icons';
 import {
   Modal,
   Form,
@@ -24,120 +24,106 @@ import {
   message,
   Button,
   Space,
-  Card,
-} from 'antd'
-import axios from 'axios'
-import React, { useState, useEffect } from 'react'
+} from 'antd';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 
-const apirest = API_REST || 'https://apirest.bodegaportilla.com'
+const apirest = API_URL;
 export interface PropsModal {
-  visible: boolean
-  product?: PRODUCTS.Product
-  onOk?: (props: PRODUCTS.Product, lista: string[]) => void
-  onCancel?: () => void
+  visible: boolean;
+  product?: PRODUCTS.Product;
+  onOk?: (props: PRODUCTS.Product, lista: string[]) => void;
+  onCancel?: () => void;
 }
 
-const { TabPane } = Tabs
-const FormItem = Form.Item
-const { Option } = Select
-const { Text } = Typography
+const { TabPane } = Tabs;
+const FormItem = Form.Item;
+const { Option } = Select;
+const { Text } = Typography;
 
 const ModalEditProduct = (props: PropsModal): React.ReactNode => {
-  const { visible, onCancel, product, onOk } = props
-  const [loading, setLoading] = useState(false)
-  const [groups, setGroups] = useState<PRODUCTS.Group[]>([])
-  const [subgroups, setSubgroups] = useState<PRODUCTS.Subgroup[]>([])
-  const [brands, setBrands] = useState<PRODUCTS.Brand[]>([])
-  const [images, setImages] = useState<{ url?: string; img?: string; uid: string; name: string }[]>(
-    [],
-  )
-  const [activeKey, setActiveKey] = useState('1')
-  const [lista, setLista] = useState<string[]>([])
+  const { visible, onCancel, product, onOk } = props;
+  const [groups, setGroups] = useState<PRODUCTS.Group[]>([]);
+  const [subgroups, setSubgroups] = useState<PRODUCTS.Subgroup[]>([]);
+  const [brands, setBrands] = useState<PRODUCTS.Brand[]>([]);
+  const [image, setImage] = useState<Partial<{ url?: string; img?: string }[]>>([]);
+  const [activeKey, setActiveKey] = useState('1');
+  const [lista, setLista] = useState<string[]>([]);
+  const [listImages, setListImages] = useState([]);
 
   const onChangeGroup = (id: any) => {
-    const groupSelected = groups.find(group => group.id === id)
-    setSubgroups(groupSelected?.subgrupos || [])
-  }
+    const groupSelected = groups.find((group) => group.id === id);
+    setSubgroups(groupSelected?.subgrupos || []);
+  };
 
   const getGroups = async () => {
     try {
-      const response = await axios.get(`${apirest}/parametros/grupos`)
+      const response = await axios.get(`${apirest}/parametros/grupos`);
       if (response.status === 200) {
-        setGroups(response.data)
+        console.log(response);
+
+        setGroups(response.data);
         if (product) {
-          onChangeGroup(product.idgrupo)
+          onChangeGroup(product.idgrupo);
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       if (error.status === 401) {
-        loginOut()
+        loginOut();
       }
-      message.error('Ha ocurrido un error')
+      message.error('Ha ocurrido un error');
     }
-  }
+  };
 
   const getBrands = async () => {
     try {
-      const response = await axios.get(`${apirest}/parametros/marcas`)
+      const response = await axios.get(`${apirest}/parametros/marcas`);
       if (response.status === 200) {
-        setBrands(response.data)
+        setBrands(response.data);
       }
     } catch (error) {
       if (error.status === 401) {
-        loginOut()
+        loginOut();
       }
-      message.error('Ha ocurrido un error')
+      message.error('Ha ocurrido un error');
     }
-  }
-
-  useEffect(() => {
-    const newLista = product?.lista.split('*') || []
-    const imagesList = product?.img?.split('|') || []
-    const images = imagesList.map(img => ({ url: `${apirest}/img/articulos/${img}`, img, uid: img, name: img }))
-    setImages(images)
-    setLista(newLista)
-    getGroups()
-    getBrands()
-  }, [props.visible])
+  };
 
   const agregaritem = () => {
-    const newList = [...lista]
-    newList.push('')
-    setLista(newList)
-  }
+    const newList = [...lista];
+    newList.push('');
+    setLista(newList);
+  };
 
   const onChange = (info: any) => {
-    setLoading(true)
     if (info.file.status === 'done') {
-      setLoading(false)
-      const newImages = images?.concat([
+      console.log(info);
+
+      setImage([
+        ...image,
         {
-          uid: info.file.response.img,
-          name: info.file.response.img,
           url: `temp/${info.file.response.img}`,
           img: info.file.response.img,
         },
-      ])
-      setImages(newImages)
-      message.success(`${info.file.name} imagen subida correctamente`)
+      ]);
+      message.success(`${info.file.name} imagen subida correctamente`);
     } else if (info.file.status === 'error') {
-      setLoading(false)
-      message.error(`${info.file.name} error al subir la imagen`)
+      message.error(`${info.file.name} error al subir la imagen`);
     }
-    return false
-  }
+    return false;
+  };
 
   const eliminarItem = (i: number) => {
-    const newList = [...lista]
-    newList.splice(i, 1)
-    setLista(newList)
-  }
+    const newList = [...lista];
+    newList.splice(i, 1);
+    setLista(newList);
+  };
 
   const onChangeLista = (e: React.KeyboardEventHandler, i: number) => {
-    const newList = [...lista]
-    newList[i] = e.target.value
-    setLista(newList)
-  }
+    const newList = [...lista];
+    newList[i] = e.target.value;
+    setLista(newList);
+  };
 
   const initialValuesForm = {
     embalaje: 'Und',
@@ -146,27 +132,37 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
     categoria: 'NORMAL',
     ...product,
     estado: product?.estado !== 0,
-  }
+  };
   const onFinish = (values: any) => {
     if (values.precio)
       if (values.clasificacion) {
-        delete values.imagen
-        const newImages = images.reduce((ant, img) => `${ant}|${img.img}`, '')
-        onOk && onOk({ ...values, img: newImages }, lista)
-      } else setActiveKey('3')
-    else setActiveKey('2')
-  }
+        delete values.imagen;
+        const img = image.map((dato) => ({ url: dato?.img }));
+        if (onOk) onOk({ ...values, img }, lista);
+      } else setActiveKey('3');
+    else setActiveKey('2');
+  };
 
-  const deleteImage = (uid: string) => {
-    const newImages = images.filter(image => image.uid !== uid)
-    setImages(newImages)
-  }
-  const uploadButton = (
-    <div>
-      {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div style={{ marginTop: 8 }}>Subir</div>
-    </div>
-  )
+  const getImageList = () => {
+    const images = product?.img?.split('|');
+
+    const list = images?.map((img, key) => ({
+      uid: key,
+      name: img,
+      status: 'done',
+      url: `${apirest}/${img}`,
+      thumbUrl: `${apirest}/${img}`,
+    }));
+    setListImages(list || []);
+  };
+
+  useEffect(() => {
+    const newLista = product?.lista.split('*') || [];
+    setLista(newLista);
+    getGroups();
+    getBrands();
+    getImageList();
+  }, [props.visible]);
 
   return (
     <Modal
@@ -178,22 +174,22 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
       destroyOnClose
     >
       <Form
-        layout='vertical'
+        layout="vertical"
         initialValues={{
           ...initialValuesForm,
           precio:
             initialValuesForm.embalaje === 'Und'
               ? initialValuesForm.precio
               : (initialValuesForm?.precio || 0) * 1000,
-              dcto1:
-              initialValuesForm.embalaje === 'Und'
-                ? initialValuesForm.dcto1
-                : (initialValuesForm?.dcto1 || 0) * 1000,
-                dcto2:
+          dcto1:
+            initialValuesForm.embalaje === 'Und'
+              ? initialValuesForm.dcto1
+              : (initialValuesForm?.dcto1 || 0) * 1000,
+          dcto2:
             initialValuesForm.embalaje === 'Und'
               ? initialValuesForm.dcto2
               : (initialValuesForm?.dcto2 || 0) * 1000,
-              dcto3 :
+          dcto3:
             initialValuesForm.embalaje === 'Und'
               ? initialValuesForm.dcto3
               : (initialValuesForm?.dcto3 || 0) * 1000,
@@ -207,13 +203,13 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
                 <BarcodeOutlined /> Generales
               </>
             }
-            key='1'
+            key="1"
           >
             <Row gutter={16}>
               <Col span={10}>
                 <FormItem
-                  label='Código'
-                  name='codigo'
+                  label="Código"
+                  name="codigo"
                   rules={[{ required: true, message: 'Obligatorio' }]}
                 >
                   <Input />
@@ -221,8 +217,8 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
               </Col>
               <Col span={14}>
                 <FormItem
-                  label='Nombre'
-                  name='nombre'
+                  label="Nombre"
+                  name="nombre"
                   rules={[{ required: true, message: 'Obligatorio' }]}
                 >
                   <Input />
@@ -231,29 +227,29 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
             </Row>
             <Row gutter={16}>
               <Col span={24}>
-                <FormItem label='Descripción' name='descripcion'>
+                <FormItem label="Descripción" name="descripcion">
                   <Input.TextArea />
                 </FormItem>
               </Col>
             </Row>
             <Row gutter={16}>
               <Col span={12}>
-                <FormItem label='Categoría' name='categoria'>
+                <FormItem label="Categoría" name="categoria">
                   <Select>
-                    <Option value='NORMAL'>NORMAL</Option>
-                    <Option value='REGALO'>REGALO</Option>
-                    <Option value='NUEVO'>NUEVO</Option>
+                    <Option value="NORMAL">NORMAL</Option>
+                    <Option value="REGALO">REGALO</Option>
+                    <Option value="NUEVO">NUEVO</Option>
                   </Select>
                 </FormItem>
               </Col>
               <Col span={12}>
                 <FormItem
-                  label='Grupo'
-                  name='idgrupo'
+                  label="Grupo"
+                  name="idgrupo"
                   rules={[{ required: true, message: 'Obligatorio' }]}
                 >
                   <Select onChange={onChangeGroup}>
-                    {groups.map(group => (
+                    {groups?.map((group) => (
                       <Option key={group.nombre} value={group.id}>
                         {group.nombre}
                       </Option>
@@ -265,12 +261,12 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
             <Row gutter={16}>
               <Col span={12}>
                 <FormItem
-                  label='Subgrupo'
-                  name='idsubgrupo'
+                  label="Subgrupo"
+                  name="idsubgrupo"
                   rules={[{ required: true, message: 'Obligatorio' }]}
                 >
                   <Select>
-                    {subgroups.map(subgroup => (
+                    {subgroups.map((subgroup) => (
                       <Option key={subgroup.nombre} value={subgroup.id}>
                         {subgroup.nombre}
                       </Option>
@@ -280,12 +276,12 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
               </Col>
               <Col span={12}>
                 <FormItem
-                  label='Marca'
-                  name='idmarca'
+                  label="Marca"
+                  name="idmarca"
                   rules={[{ required: true, message: 'Obligatorio' }]}
                 >
                   <Select>
-                    {brands.map(brand => (
+                    {brands?.map((brand) => (
                       <Option key={brand.nombre} value={brand.id}>
                         {brand.nombre}
                       </Option>
@@ -294,7 +290,7 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
                 </FormItem>
               </Col>
             </Row>
-            <FormItem label='Estado' name='estado' valuePropName='checked'>
+            <FormItem label="Estado" name="estado" valuePropName="checked">
               <Switch defaultChecked />
             </FormItem>
           </TabPane>
@@ -304,30 +300,30 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
                 <SketchOutlined /> Precios y Descuentos
               </>
             }
-            key='2'
+            key="2"
           >
             <Row gutter={16}>
               <Col span={9}>
                 <FormItem
-                  label='Precio'
-                  name='precio'
+                  label="Precio"
+                  name="precio"
                   rules={[{ required: true, message: 'Obligatorio' }]}
                 >
                   <InputNumber style={{ width: '100%' }} />
                 </FormItem>
               </Col>
               <Col span={6}>
-                <FormItem label='Embalaje' name='embalaje'>
+                <FormItem label="Embalaje" name="embalaje">
                   <Select>
-                    <Option value='Und'>Und</Option>
-                    <Option value='Gr'>Gr</Option>
+                    <Option value="Und">Und</Option>
+                    <Option value="Gr">Gr</Option>
                   </Select>
                 </FormItem>
               </Col>
               <Col span={9}>
                 <FormItem
-                  label='Incremento'
-                  name='incremento'
+                  label="Incremento"
+                  name="incremento"
                   rules={[{ required: true, message: 'Obligatorio' }]}
                 >
                   <InputNumber style={{ width: '100%' }} />
@@ -337,12 +333,12 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
             <Divider>Descuento 1</Divider>
             <Row gutter={16}>
               <Col span={12}>
-                <FormItem label='Precio con descuento' name='dcto1'>
+                <FormItem label="Precio con descuento" name="dcto1">
                   <InputNumber style={{ width: '100%' }} defaultValue={0} />
                 </FormItem>
               </Col>
               <Col span={12}>
-                <FormItem label='Cantidad Mínima' name='cant_dcto1'>
+                <FormItem label="Cantidad Mínima" name="cant_dcto1">
                   <InputNumber style={{ width: '100%' }} defaultValue={0} />
                 </FormItem>
               </Col>
@@ -350,12 +346,12 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
             <Divider>Descuento 2</Divider>
             <Row gutter={16}>
               <Col span={12}>
-                <FormItem label='Precio con descuento' name='dcto2'>
+                <FormItem label="Precio con descuento" name="dcto2">
                   <InputNumber style={{ width: '100%' }} defaultValue={0} />
                 </FormItem>
               </Col>
               <Col span={12}>
-                <FormItem label='Cantidad Mínima' name='cant_dcto2'>
+                <FormItem label="Cantidad Mínima" name="cant_dcto2">
                   <InputNumber style={{ width: '100%' }} defaultValue={0} />
                 </FormItem>
               </Col>
@@ -363,12 +359,12 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
             <Divider>Descuento 3</Divider>
             <Row gutter={16}>
               <Col span={12}>
-                <FormItem label='Precio con descuento' name='dcto3'>
+                <FormItem label="Precio con descuento" name="dcto3">
                   <InputNumber style={{ width: '100%' }} defaultValue={0} />
                 </FormItem>
               </Col>
               <Col span={12}>
-                <FormItem label='Cantidad Mínima' name='cant_dcto3'>
+                <FormItem label="Cantidad Mínima" name="cant_dcto3">
                   <InputNumber style={{ width: '100%' }} defaultValue={0} />
                 </FormItem>
               </Col>
@@ -380,58 +376,32 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
                 <PlusOutlined /> Otros
               </>
             }
-            key='3'
+            key="3"
           >
             <Row gutter={16}>
-              <Col span={24}>
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
-                  {images.map(image => (
-                    <Card
-                      bordered
-                      bodyStyle={{ padding: 0 }}
-                      style={{ width: 100 }}
-                      actions={[
-                        <DeleteOutlined
-                          key='delete'
-                          style={{ color: 'red' }}
-                          onClick={() => deleteImage(image.uid)}
-                        />,
-                      ]}
-                    >
-                      <img
-                        style={{ width: 100, height: 100 }}
-                        alt={image.img}
-                        src={image.url}
-                      />
-                    </Card>
-                  ))}
-                </div>
-                <FormItem label='Imagen' name='imagen'>
-                  {images?.length < 2 ? (
-                    <Upload
-                      name='avatar'
-                      headers={{
-                        authorization: localStorage.getItem('token') || '',
-                      }}
-                      action={`${apirest}/parametros/subirimg`}
-                      listType='picture-card'
-                      className='avatar-uploader'
-                      showUploadList={false}
-                      onChange={onChange}
-                      disabled={loading}
-                    >
-                      {uploadButton}
-                    </Upload>
-                  ) : null}
+              <Col span={10}>
+                <FormItem label="Imagen" name="imagen">
+                  <Upload
+                    headers={{
+                      authorization: localStorage.getItem('token') || '',
+                    }}
+                    action={`${apirest}/parametros/subirimg`}
+                    listType="picture"
+                    defaultFileList={[...listImages]}
+                    onChange={onChange}
+                    className="upload-list-inline"
+                  >
+                    <Button icon={<UploadOutlined />}>Upload</Button>
+                  </Upload>
                 </FormItem>
               </Col>
               <Col span={7}>
-                <FormItem label='Clasificación' name='clasificacion'>
+                <FormItem label="Clasificación" name="clasificacion">
                   <InputNumber min={1} max={5} />
                 </FormItem>
               </Col>
               <Col span={7}>
-                <FormItem label='Estrellas' name='rank'>
+                <FormItem label="Estrellas" name="rank">
                   <InputNumber min={1} max={5} />
                 </FormItem>
               </Col>
@@ -440,13 +410,13 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
               label={
                 <Text>
                   Lista Beneficios
-                  <Divider type='vertical' />
-                  <Button icon={<PlusOutlined />} onClick={agregaritem} type='primary'>
+                  <Divider type="vertical" />
+                  <Button icon={<PlusOutlined />} onClick={agregaritem} type="primary">
                     Agregar
                   </Button>
                 </Text>
               }
-              name='lista'
+              name="lista"
             >
               <List
                 style={{
@@ -463,7 +433,7 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
                           <Text>{i}</Text>
                         </Col>
                         <Col span={20}>
-                          <Input defaultValue={item} onChange={e => onChangeLista(e, i)} />
+                          <Input defaultValue={item} onChange={(e) => onChangeLista(e, i)} />
                         </Col>
                         <Col
                           span={2}
@@ -479,9 +449,9 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
                           />
                         </Col>
                       </Row>
-                    )
+                    );
                   }
-                  return null
+                  return null;
                 })}
               </List>
             </FormItem>
@@ -490,12 +460,12 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
         <Row>
           <Space>
             <FormItem>
-              <Button type='primary' htmlType='submit'>
+              <Button type="primary" htmlType="submit">
                 Guardar
               </Button>
             </FormItem>
             <FormItem>
-              <Button htmlType='reset' onClick={onCancel}>
+              <Button htmlType="reset" onClick={onCancel}>
                 Cancelar
               </Button>
             </FormItem>
@@ -503,7 +473,7 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
         </Row>
       </Form>
     </Modal>
-  )
-}
+  );
+};
 
-export default ModalEditProduct
+export default ModalEditProduct;

@@ -13,8 +13,7 @@ import FormatoRemision from './reports/FormatoRemision'
 import { stringify } from 'qs';
 import { loginOut } from '@/components/RightContent/AvatarDropdown';
 
-const apirest = API_REST || 'https://apirest.bodegaportilla.com'
-
+const apirest = API_URL
 const FormItem = Form.Item
 const { RangePicker } = DatePicker
 const { Option } = Select

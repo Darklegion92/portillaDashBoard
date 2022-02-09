@@ -7,7 +7,7 @@ import { DeleteOutlined, MobileOutlined, PlusOutlined, SaveFilled, WindowsOutlin
 import type { UploadFile } from 'antd/lib/upload/interface';
 import { loginOut } from '@/components/RightContent/AvatarDropdown';
 
-const apirest = API_REST || 'https://apirest.bodegaportilla.com'
+const apirest = API_URL;
 
 const { TabPane } = Tabs;
 

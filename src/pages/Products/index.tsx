@@ -9,7 +9,7 @@ import type { PropsModal } from './ModalEditProduct';
 import ModalEditProduct from './ModalEditProduct';
 import { loginOut } from '@/components/RightContent/AvatarDropdown';
 
-const apirest = API_REST || 'https://apirest.bodegaportilla.com';
+const apirest = API_URL;
 
 const FormItem = Form.Item;
 
