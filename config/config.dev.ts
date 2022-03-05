@@ -3,7 +3,7 @@ import { defineConfig } from 'umi';
 
 export default defineConfig({
   define: {
-    API_URL: 'https://apirest.bodegaportilla.com',
+    API_URL: 'http://localhost'||'https://apirest.bodegaportilla.com',
   },
   plugins: [
     // https://github.com/zthxxx/react-dev-inspector

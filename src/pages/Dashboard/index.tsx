@@ -5,11 +5,10 @@ import axios from 'axios'
 
 const { Title } = Typography
 
-const apirest = API_REST || 'https://apirest.bodegaportilla.com'
+const apirest = API_URL || 'https://apirest.bodegaportilla.com'
 
 const Dashboard = (): React.ReactNode => {
   const [counter, setCounter] = useState(99999)
-  const [reportData, setReportData] = useState({})
   const getCounter = async () => {
     const response = await axios.get(`${apirest}/parametros/contador`)
     if (response.status === 200) {
