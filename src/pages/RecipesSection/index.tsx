@@ -35,7 +35,7 @@ const Orders = (): React.ReactNode => {
         serRecipes(response.data);
       }
     } catch (error) {
-      if (error.status === 401) {
+      if (error?.response?.status === 401) {
         loginOut();
       }
       message.error('Ha ocurrido un error');
@@ -86,7 +86,7 @@ const Orders = (): React.ReactNode => {
         return true;
       }
     } catch (error) {
-      if (error.status === 401) {
+      if (error?.response?.status === 401) {
         loginOut();
       }
       message.error('Ha ocurrido un error');

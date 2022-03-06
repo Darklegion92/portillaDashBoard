@@ -66,7 +66,7 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
         }
       }
     } catch (error) {
-      if (error.status === 401) {
+      if (error?.response?.status === 401) {
         loginOut()
       }
       message.error('Ha ocurrido un error')
@@ -80,7 +80,7 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
         setBrands(response.data)
       }
     } catch (error) {
-      if (error.status === 401) {
+      if (error?.response?.status === 401) {
         loginOut()
       }
       message.error('Ha ocurrido un error')

@@ -45,7 +45,7 @@ const Dashboard = (): React.ReactNode => {
         setImagesMovil(newImagesMovil)
       }
     } catch (error) {
-      if (error.status === 401) {
+      if (error?.response?.status === 401) {
         loginOut()
       }
       message.error('Ha ocurrido un error')
@@ -118,7 +118,7 @@ const Dashboard = (): React.ReactNode => {
       })
       getImages()
     } catch (error) {
-      if (error.status === 401) {
+      if (error?.response?.status === 401) {
         loginOut()
       }
       message.error('Ha ocurrido un error')
@@ -136,7 +136,7 @@ const Dashboard = (): React.ReactNode => {
         message.success('Imagen agregada correctamente')
       }
     } catch (error) {
-      if (error.status === 401) {
+      if (error?.response?.status === 401) {
         loginOut()
       }
       message.error('Ha ocurrido un error')

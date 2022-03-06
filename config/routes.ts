@@ -49,10 +49,28 @@
     component: './RecipesSection',
   },
   {
+    path: '/reports',
+    name: 'Reportes',
+    icon: 'StockOutlined',
+    routes: [
+      {
+        path: '/reports/salesCustomer',
+        name: 'Ventas x cliente',
+        component: './reports/salescustomer',
+      },
+
+      {
+        path: '/reports/salesProduct',
+        name: 'Ventas x artículo',
+        component: './reports/salesproduct',
+      },
+    ],
+  },
+  {
     path: '/',
     redirect: '/dashboard',
   },
   {
     component: './404',
   },
-];
+]

@@ -53,7 +53,7 @@ const Orders = (): React.ReactNode => {
         localStorage.clear();
       }
     } catch (error) {
-      if (error.status === 401) {
+      if (error?.response?.status === 401) {
         loginOut();
       }
       message.error('Se ha presentado un error');
@@ -73,7 +73,7 @@ const Orders = (): React.ReactNode => {
         setOrders([]);
       }
     } catch (error) {
-      if (error.status === 401) {
+      if (error?.response?.status === 401) {
         loginOut();
       }
       message.error('Ha ocurrido un error');
@@ -139,7 +139,7 @@ const Orders = (): React.ReactNode => {
         message.error(response.data.messaje);
       }
     } catch (error) {
-      if (error.status === 401) {
+      if (error?.response?.status === 401) {
         loginOut();
       }
       message.error('Ha ocurrido un error');

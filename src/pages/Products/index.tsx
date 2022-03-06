@@ -28,7 +28,7 @@ const Products = (): React.ReactNode => {
         setProducts([]);
       }
     } catch (error) {
-      if (error.status === 401) {
+      if (error?.response?.status === 401) {
         loginOut();
       }
     }
@@ -97,7 +97,7 @@ const Products = (): React.ReactNode => {
           message.success('Producto actualizado correctamente');
         }
       } catch (error) {
-        if (error.status === 401) {
+        if (error?.response?.status === 401) {
           loginOut();
         }
         message.error('Ha ocurrido un error');
@@ -119,7 +119,7 @@ const Products = (): React.ReactNode => {
           message.success('Producto creado correctamente');
         }
       } catch (error) {
-        if (error.status === 401) {
+        if (error?.response?.status === 401) {
           loginOut();
         }
         message.error('Ha ocurrido un error');
