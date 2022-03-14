@@ -56,13 +56,13 @@
       {
         path: '/reports/salesCustomer',
         name: 'Ventas x cliente',
-        component: './reports/salescustomer',
+        component: './Reports/SalesCustomer',
       },
 
       {
         path: '/reports/salesProduct',
         name: 'Ventas x artículo',
-        component: './reports/salesproduct',
+        component: './Reports/SalesProduct',
       },
     ],
   },
@@ -73,4 +73,4 @@
   {
     component: './404',
   },
-]
+];

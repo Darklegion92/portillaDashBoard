@@ -13,7 +13,7 @@ const Settings: LayoutSettings & {
   fixSiderbar: true,
   colorWeak: false,
   title: 'Bodega Portilla',
-  pwa: false,
+  pwa: true,
   logo: 'logo.png',
   iconfontUrl: '',
 };
