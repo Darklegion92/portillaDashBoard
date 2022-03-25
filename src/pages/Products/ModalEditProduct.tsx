@@ -192,6 +192,9 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
   useEffect(() => {
     const newLista = product?.lista.split('*') || [];
     setLista(newLista);
+    setImage([]);
+    setActiveKey('1');
+    setListImages([]);
     getGroups();
     getBrands();
     getImageList();
