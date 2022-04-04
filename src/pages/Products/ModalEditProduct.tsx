@@ -133,39 +133,34 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
   };
 
   const onFinish = (values: any) => {
-    if (values.precio)
-      if (values.clasificacion) {
-        delete values.imagen;
+    delete values.imagen;
 
-        let img = [];
+    let img = [];
 
-        console.log(image);
-        console.log(listImages);
+    if (image.length > 0) {
+      const img1 = image.map((dato) => {
+        const data = dato?.img?.split('/') || [];
+        return { url: data[data?.length - 1] };
+      });
 
-        if (image.length > 0) {
-          const img1 = image.map((dato) => {
-            const data = dato?.img?.split('/') || [];
-            return { url: data[data?.length - 1] };
-          });
+      img = [...img, ...img1];
+    }
 
-          img = [...img, ...img1];
-        }
+    if (listImages.length > 0) {
+      let img1 = listImages.map((dato) => {
+        const data = dato?.name?.split('/') || [];
+        return { url: data[data?.length - 1] };
+      });
+      img1 = img1.filter((item) => item.url != undefined);
 
-        if (listImages.length > 0) {
-          let img1 = listImages.map((dato) => {
-            const data = dato?.name?.split('/') || [];
-            return { url: data[data?.length - 1] };
-          });
-          img1 = img1.filter((item) => item.url != undefined);
+      img = [...img, ...img1];
+    }
 
-          img = [...img, ...img1];
-        }
+    if (onOk) onOk({ ...values, img }, lista);
+  };
 
-        console.log(img);
-
-        if (onOk) onOk({ ...values, img }, lista);
-      } else setActiveKey('3');
-    else setActiveKey('2');
+  const onError = (error: any) => {
+    console.log(error);
   };
 
   const getImageList = () => {
@@ -231,6 +226,7 @@ const ModalEditProduct = (props: PropsModal): React.ReactNode => {
               : (initialValuesForm?.dcto3 || 0) * 1000,
         }}
         onFinish={onFinish}
+        onError={onError}
       >
         <Tabs activeKey={activeKey} onChange={setActiveKey}>
           <TabPane

@@ -1,26 +1,22 @@
-﻿import React from 'react'
-import './styles.css'
+﻿import React from 'react';
+import './styles.css';
 
 export default class FormatoFactura extends React.Component {
   render() {
-    const formato = new Intl.NumberFormat('en-Us')
-    const {
-      Header, Body
-    } = this.props.datos
+    const formato = new Intl.NumberFormat('en-Us');
+    const { Header, Body } = this.props.datos;
 
     return Header && Body ? (
-      <div className='formato-facturaventa'>
-        <div className='encabezado'>
-          <div style={{ fontSize: '40px' }}>
-            ORDEN DE PEDIDO
-          </div>
+      <div className="formato-facturaventa">
+        <div className="encabezado">
+          <div style={{ fontSize: '40px' }}>ORDEN DE PEDIDO</div>
           <div>Cliente: {Header.nombre}</div>
           <div>Documento: {Header.documento}</div>
           <div>Teléfono: {Header.telefono}</div>
           <div>Direccion: {Header.direccion}</div>
         </div>
-        <div className='cuerpo'>
-          <div className='columnas'>
+        <div className="cuerpo">
+          <div className="columnas">
             <div style={{ width: '15%' }}>Código</div>
             <div style={{ width: '40%' }}>Descripción</div>
             <div style={{ width: '8%' }}>Cant</div>
@@ -28,9 +24,9 @@ export default class FormatoFactura extends React.Component {
             <div style={{ width: '15%' }}>V. Total</div>
           </div>
           {Body.length > 0 &&
-            Body.map(dato => {
+            Body.map((dato) => {
               return (
-                <div className='fila'>
+                <div className="fila">
                   <div style={{ width: '15%' }}>{dato.codigoarticulo}</div>
                   <div style={{ width: '40%' }}>{dato.nombrearticulo}</div>
                   <div style={{ width: '8%' }}>{dato.cantidad}</div>
@@ -39,11 +35,11 @@ export default class FormatoFactura extends React.Component {
                     {formato.format(dato.cantidad * dato.preciound)}
                   </div>
                 </div>
-              )
+              );
             })}
         </div>
-        <div className='pie'>
-          <div style={{ fontSize: '12px', 'text-align': 'left' }}>
+        <div className="pie">
+          <div style={{ fontSize: '30px', 'text-align': 'right', paddingRight: 40 }}>
             <span>Total:</span> {formato.format(Header.total)}
           </div>
           <div style={{ fontSize: '10px', 'font-weight': 'bold' }}>
@@ -51,6 +47,8 @@ export default class FormatoFactura extends React.Component {
           </div>
         </div>
       </div>
-    ) : <div>Sin Datos</div>
+    ) : (
+      <div>Sin Datos</div>
+    );
   }
 }
