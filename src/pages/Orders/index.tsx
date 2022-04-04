@@ -1,23 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import axios from 'axios';
-import {
-  Button,
-  Card,
-  Col,
-  Divider,
-  Form,
-  DatePicker,
-  message,
-  Row,
-  Select,
-  Table,
-  Space,
-} from 'antd';
+import { Button, Card, Col, Divider, Form, DatePicker, message, Row, Select, Table } from 'antd';
 import numeral from 'numeral';
 import { useReactToPrint } from 'react-to-print';
 import type { ColumnsType } from 'antd/lib/table';
-import { EditFilled, PrinterOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditFilled, PrinterOutlined } from '@ant-design/icons';
 import type { PropsModal } from './ModalEditOrder';
 import moment from 'moment';
 import ModalEditOrder from './ModalEditOrder';
@@ -117,6 +105,22 @@ const Orders = (): React.ReactNode => {
       order: orderSelected,
       idStatus: orderSelected?.idestado,
     });
+  };
+
+  const deleteOrder = async (id: number) => {
+    try {
+      const response = await axios.delete(`${apirest}/carrito/${id}`, {
+        headers: {
+          authorization: localStorage.getItem('token') || '',
+        },
+      });
+      if (response.status === 200) {
+        message.success('Pedido eliminado correctamente');
+        getOrders();
+      }
+    } catch (error) {
+      message.error(`Error, ${error}`);
+    }
   };
 
   const changeState = async (params: ORDERS.Order, idState?: number) => {
@@ -259,6 +263,13 @@ const Orders = (): React.ReactNode => {
             />
             <Divider type="vertical" />
             <Button onClick={() => showModal(id)} type="primary" icon={<EditFilled />} />
+            <Divider type="vertical" />
+            <Button
+              onClick={() => deleteOrder(id)}
+              type="primary"
+              icon={<DeleteOutlined />}
+              danger
+            />
           </>
         ),
       },
