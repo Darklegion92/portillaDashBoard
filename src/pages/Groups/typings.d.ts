@@ -32,7 +32,6 @@ declare namespace PRODUCTS {
   type Subgroup = {
     id: number;
     nombre: string;
-    descuento: number;
     idgrupo: number;
   };
   type Brand = {

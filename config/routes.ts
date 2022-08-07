@@ -37,6 +37,16 @@
     component: './Products',
   },
   {
+    path: '/groups',
+    name: 'Agrupaciones',
+    icon: 'AppstoreAddOutlined',
+    component: './Groups',
+  },
+  {
+    path: '/groups/:id',
+    component: './Groups/Subgroups',
+  },
+  {
     path: '/orders',
     name: 'Pedidos',
     icon: 'DollarCircleOutlined',
