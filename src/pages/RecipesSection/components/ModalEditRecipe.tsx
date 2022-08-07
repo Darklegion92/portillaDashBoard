@@ -1,6 +1,9 @@
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { Upload, Form, Modal, message, Input, Button } from 'antd';
 import { useState } from 'react';
+import ReactQuill from 'react-quill';
+
+import 'react-quill/dist/quill.snow.css';
 
 export interface ModalProps {
   visible: boolean;
@@ -107,7 +110,7 @@ const ModalEditRecipe = (props: ModalProps) => {
           name="texto"
           rules={[{ required: true, message: 'Campo obligatorio' }]}
         >
-          <Input.TextArea defaultValue={recipe?.texto} disabled={loading} />
+          <ReactQuill theme="snow" />
         </FormItem>
         <FormItem>
           <Button
